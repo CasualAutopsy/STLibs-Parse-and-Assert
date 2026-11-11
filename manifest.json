@@ -1,0 +1,10 @@
+{
+    "display_name": "[Library] Parse and Assert",
+    "loading_order": 1,
+    "requires": [],
+    "optional": [],
+    "js": "dist/main.bundled.js",
+    "author": "EquinoxPsychosis",
+    "version": "0.1.0",
+    "auto_update": false
+}
