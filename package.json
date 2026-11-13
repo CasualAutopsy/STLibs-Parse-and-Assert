@@ -1,7 +1,11 @@
 {
   "name": "stlibs-parse-and-assert",
-  "version": "0.1.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "SillyTavern extension library for parsing and assertions.",
+  "private": true,
+  "author": "EquinoxPsychosis",
+  "homepage": "https://github.com/CasualAutopsy/STLibs-Parse-and-Assert",
+  "bugs": "https://github.com/CasualAutopsy/STLibs-Parse-and-Assert/issues",
   "type": "module",
   "scripts": {
     "build": "webpack",

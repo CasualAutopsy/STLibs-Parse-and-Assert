@@ -5,6 +5,7 @@
     "optional": [],
     "js": "dist/main.bundled.js",
     "author": "EquinoxPsychosis",
-    "version": "0.1.0",
+    "version": "0.1.1",
+    "homePage": "https://github.com/CasualAutopsy/STLibs-Parse-and-Assert",
     "auto_update": false
 }

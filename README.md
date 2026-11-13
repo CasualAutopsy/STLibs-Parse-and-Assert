@@ -5,7 +5,7 @@ A SillyTavern extension library for parsing and asserting data types. This libra
 ## Installation
 
 1. Open the extension settings drawer in SillyTavern and click `Install extension`.
-2. Paste the following link: `[PLACEHOLDER]`.
+2. Paste the following link: `https://github.com/CasualAutopsy/STLibs-Parse-and-Assert.git`.
 3. Click `Install just for me` if you're a user, ~~or `Install for all users` if you're a developer~~(The developer side of things is still a WIP).
 
 ## Usage
