@@ -2,7 +2,15 @@
 
 A SillyTavern extension library for parsing and asserting data types. This library provides a set of validators and assertion functions to ensure data integrity in your scripts.
 
-## Installation
+## Setup
+
+### Prerequisites
+
+Extensions:
+
+- **Unstable ST Context**: [github](https://github.com/CasualAutopsy/STLibs-Unstable-Context)
+
+### Installation
 
 1. Open the extension settings drawer in SillyTavern and click `Install extension`.
 2. Paste the following link: `https://github.com/CasualAutopsy/STLibs-Parse-and-Assert.git`.
@@ -14,7 +22,7 @@ A SillyTavern extension library for parsing and asserting data types. This libra
 
 The library provides a single slash command to assert data types that users can use OOTB without any dependant extensions.
 
-#### `/assert` Usage
+**`/assert` Usage**
 
 named args:
 
@@ -64,7 +72,7 @@ The `STAssert` class provides a set of core assertion methods to ensure data int
 
 example:
 
-```javascript
+```js
 const { STAssert } = STPALib;
 
 async function exampleSlashHandler(args, val) {
@@ -82,7 +90,7 @@ It also provides 2 methods for creating slash commands for assertions and schema
 
 example:
 
-```javascript
+```js
 export const YourAssert = new STPALib.ExtAssert('your-id');
 
 const your_schema = {
@@ -107,7 +115,7 @@ since STscript variables are either closures or strings, the `STParse` class pro
 
 example:
 
-```javascript
+```js
 const { STParse, STAssert } = STPALib;
 
 async function exampleIncSlashHandler(args, val) {

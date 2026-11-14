@@ -1,13 +1,16 @@
 {
     "compilerOptions": {
         "ignoreDeprecations": "6.0",
-        "checkJs": true,
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
-        "allowUmdGlobalAccess": true,
-        "allowSyntheticDefaultImports": true,
-        "strictBindCallApply": true,
-        "baseUrl": "../../../../"
-    }
+        "resolveJsonModule": true,
+    },
+    "extends": "../../../../jsconfig.json",
+    "include": [
+        "**/*.js",
+        "**/*.json",
+        "**/*.md",
+        "**/*.d.ts",
+    ],
+    "exclude": [
+        "tests/**/*.js"
+    ]
 }

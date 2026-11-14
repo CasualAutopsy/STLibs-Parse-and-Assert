@@ -1,6 +1,6 @@
 {
   "name": "stlibs-parse-and-assert",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "SillyTavern extension library for parsing and assertions.",
   "private": true,
   "author": "EquinoxPsychosis",
@@ -9,17 +9,23 @@
   "type": "module",
   "scripts": {
     "build": "webpack",
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix"
+    "lint": "eslint ./",
+    "lint:fix": "eslint ./ --fix",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watchAll"
   },
   "devDependencies": {
     "@babel/preset-env": "^8.0.7",
     "@eslint/js": "^10.0.1",
     "@eslint/markdown": "^8.0.3",
+    "@jest/globals": "^30.5.2",
+    "babel-jest": "^30.5.2",
     "babel-loader": "^10.1.1",
     "eslint": "^10.14.0",
+    "eslint-markdown": "^0.22.0",
     "eslint-plugin-jsdoc": "^65.4.5",
     "globals": "^17.14.0",
+    "jest": "^30.5.2",
     "terser-webpack-plugin": "^5.6.1",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.72.2",
@@ -27,5 +33,8 @@
   },
   "dependencies": {
     "ajv": "^8.20.0"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
   }
 }

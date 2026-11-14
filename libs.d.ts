@@ -7,10 +7,6 @@ declare global {
         ExtAssert: typeof ExtAssert;
         STParse: typeof STParse;
     }
-
-    type JSONTypes = string | number | boolean | object | null | (string | number | boolean | object | null)[];
-
-    type JSONSchema = Record<string, JSONTypes>;
 }
 
 export {};

@@ -6,11 +6,18 @@ import ts from 'typescript-eslint';
 
 import jsdoc from 'eslint-plugin-jsdoc';
 
-import md from '@eslint/markdown';
+import markdown from '@eslint/markdown';
+import md from 'eslint-markdown';
+
+
+import manifest from './manifest.json' with { type: 'json' };
+
+
 
 export default defineConfig([
-    { files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'] },
-    { files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'], languageOptions: { globals: globals.browser } },
+    { files: ['**/*.{js,mjs,cjs,jsx,ts,tsx,md}'] },
+    { files: ['**/*.{js,mjs,cjs,jsx,ts,tsx,md}'], languageOptions: { globals: globals.browser } },
+    { files: ['**/*.test.js'], languageOptions: { globals: { ...globals.jest } } },
     {
         files: ['**/*.{js,mjs,cjs,jsx}'],
         plugins: { js },
@@ -46,6 +53,11 @@ export default defineConfig([
         plugins: { ts },
         extends: ['ts/recommendedTypeChecked'],
         rules: {},
+        languageOptions: {
+            parserOptions: {
+                projectService: true,
+            },
+        },
     },
     {
         files: ['**/*.{js,mjs,cjs,jsx,ts,tsx}'],
@@ -57,10 +69,27 @@ export default defineConfig([
     },
     {
         files: ['**/*.md'],
-        plugins: { md },
-        extends: ['md/recommended'],
-        language: 'md/gfm',
-        rules: {},
+        plugins: {
+            markdown,
+            md,
+        },
+        extends: [
+            'markdown/recommended',
+            'md/recommended',
+        ],
+        language: 'markdown/gfm',
+        rules: {
+            'md/allow-heading': [
+                'error',
+                {
+                    h1: { allow: [`^# ${manifest.display_name}$`] },
+                    h2: { allow: ['^## (?:Setup|Usage)$'] },
+                    h3: { allow: ['^### (?:Installation|Prerequisites|Developers|Users)$'] },
+                },
+            ],
+            'md/no-trailing-heading-punctuation': 'error',
+            'md/require-capitalization': 'error',
+        },
     },
     {
         ignores: ['**/dist/**', '**/node_modules/**'],
@@ -73,6 +102,7 @@ export default defineConfig([
                 $: 'readonly',
                 toastr: 'readonly',
                 STPALib: 'readonly',
+                getUnstableSTContext: 'readonly',
             },
         },
     },

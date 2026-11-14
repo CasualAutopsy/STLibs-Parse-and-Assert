@@ -3,9 +3,9 @@
 import Ajv from 'ajv';
 const ajv = new Ajv();
 
-const { SlashCommandClosure } = await import(/* webpackIgnore: true */'/scripts/slash-commands/SlashCommandClosure.js');
-const { SlashCommandEnumValue } = SillyTavern.getContext();
+const { SlashCommandClosure } = getUnstableSTContext();
 
+const { SlashCommandEnumValue } = SillyTavern.getContext();
 
 /**
  * @typedef {import('ajv').ValidateFunction} ValidateFunction
