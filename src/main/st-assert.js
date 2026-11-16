@@ -3,7 +3,7 @@
 import Ajv from 'ajv';
 const ajv = new Ajv();
 
-const { SlashCommandClosure } = getUnstableSTContext();
+const { SlashCommandClosure } = await getUnstableContext.module('@slash-commands/SlashCommandClosure');
 
 const { SlashCommandEnumValue } = SillyTavern.getContext();
 

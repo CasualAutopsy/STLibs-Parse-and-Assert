@@ -4,7 +4,7 @@ import { describe, test, expect } from '@jest/globals';
 import { assertHandler } from '../../../../src/main/cmds/assert-handlers.js';
 
 
-const { SlashCommandClosure } = getUnstableSTContext();
+const { SlashCommandClosure } = getUnstableContext.module('@slash-commands/SlashCommandClosure');
 
 
 describe('/assert - Slash command handler tests', () => {
