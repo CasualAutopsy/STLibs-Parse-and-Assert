@@ -1,6 +1,6 @@
 {
   "name": "stlibs-parse-and-assert",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SillyTavern extension library for parsing and assertions.",
   "private": true,
   "author": "EquinoxPsychosis",
