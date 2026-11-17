@@ -3,7 +3,7 @@ import { describe, test, expect } from '@jest/globals';
 import { STAssert } from '../../../src/main/st-assert.js';
 
 
-const { SlashCommandClosure } = getUnstableSTContext();
+const { SlashCommandClosure } = getUnstableContext.module('@slash-commands/SlashCommandClosure');
 
 
 describe('STAssert assertion methods', () => {

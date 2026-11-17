@@ -102,7 +102,7 @@ export default defineConfig([
                 $: 'readonly',
                 toastr: 'readonly',
                 STPALib: 'readonly',
-                getUnstableSTContext: 'readonly',
+                getUnstableContext: 'readonly',
             },
         },
     },

@@ -5,12 +5,9 @@
     },
     "extends": "../../../../jsconfig.json",
     "include": [
-        "**/*.js",
-        "**/*.json",
-        "**/*.md",
-        "**/*.d.ts",
+        "src/**/*"
     ],
     "exclude": [
-        "tests/**/*.js"
+        "tests/**/*"
     ]
 }

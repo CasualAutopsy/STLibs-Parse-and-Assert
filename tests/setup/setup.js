@@ -1,4 +1,4 @@
-import {  } from '@jest/globals';
+import { jest } from '@jest/globals';
 
 /** @type {Map<string, string>} */
 const _scopeStore = new Map();
@@ -94,8 +94,6 @@ globalThis.SillyTavern = {
     getContext,
 };
 
-
-
 class SlashCommandClosure {
     constructor(mockReturn) {
         this.mockReturn = mockReturn;
@@ -108,8 +106,14 @@ class SlashCommandClosure {
     }
 }
 
-globalThis.getUnstableSTContext = () => {
+const getUnstableContextModule = jest.fn();
+getUnstableContextModule.whenCalledWith('@slash-commands/SlashCommandClosure').mockImplementation(() => {
     return {
         SlashCommandClosure,
     };
+});
+
+
+globalThis.getUnstableContext = {
+    module: getUnstableContextModule,
 };

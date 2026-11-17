@@ -3,7 +3,8 @@
 import Ajv from 'ajv';
 const ajv = new Ajv();
 
-const { SlashCommandClosure } = getUnstableSTContext();
+
+const { SlashCommandClosure } = await getUnstableContext.module('@slash-commands/SlashCommandClosure');
 
 const { SlashCommandEnumValue } = SillyTavern.getContext();
 
@@ -18,12 +19,9 @@ const { SlashCommandEnumValue } = SillyTavern.getContext();
 
 /**
  * @typedef {object} AssertEnumOptions
- * @property {string|null} [description] - The description of the enum.
- * @property {EnumType|null} [type] - The type of the enum.
- * @property {string|null} [typeIcon] - The icon of the enum.
- * @property {(input: string) => boolean|null} [matchProvider] - The match provider for the enum.
- * @property {(input: string) => string|null} [valueProvider] - The value provider for the enum.
- * @property {boolean|null} [makeSelectable] - Whether the enum is selectable.
+ * @property {string|null} [description=null] - The description of the enum.
+ * @property {EnumType|null} [type=null] - The type of the enum.
+ * @property {string|null} [typeIcon=null] - The icon of the enum.
  */
 
 /**
@@ -191,6 +189,7 @@ export class STAssert {
  */
 export class ExtAssert {
     /**
+     * Creates a new ExtAssert instance for developer use.
      * @param {string} id - The identifier for the ExtAssert instance.
      */
     constructor(id) {
@@ -198,11 +197,9 @@ export class ExtAssert {
     }
 
     /** @type {Map<string, ValidateFunction>} */
-    #validators = new Map();
-    /** @type {Map<string, AssertEnumOptions>} */
-    #enum = new Map();
+    validators = new Map();
     /** @type {Map<string, AssertDocOptions>} */
-    #documentation = new Map();
+    documentation = new Map();
 
 
 
@@ -212,44 +209,32 @@ export class ExtAssert {
      * @param {JSONSchema} schema - The schema to validate against.
      * @param {AssertEnumOptions} [enumOptions] - The enum options for the enum.
      * @param {AssertDocOptions} [docOptions] - The documentation options for the validator.
+     * @returns {void}
      */
     addValidator(id, schema, enumOptions, docOptions) {
         if (!(typeof id === 'string')) throw new TypeError('[ST-PA|ExtAssert - addValidator] The "name" argument must be a string.');
 
-        this.#validators.set(id, ajv.compile(schema));
-
-        if (enumOptions !== undefined)
-            this.#enum.set(id, enumOptions);
-
-        if (docOptions !== undefined)
-            this.#documentation.set(id, docOptions);
+        this.validators.set(id, ajv.compile(schema));
+        this.documentation.set(id, docOptions || {});
     }
 
     /**
      * Removes a validator from the map.
      * @param {string} name - The name of the validator to remove.
+     * @returns {void}
      */
     removeValidator(name) {
-        this.#validators.delete(name);
-        this.#enum.delete(name);
-        this.#documentation.delete(name);
+        this.validators.delete(name);
+        this.documentation.delete(name);
     }
 
     /**
      * Clears all validators from the map.
+     * @returns {void}
      */
     clearValidators() {
-        this.#validators.clear();
-        this.#enum.clear();
-        this.#documentation.clear();
-    }
-
-    /**
-     * Gets the names of all validators in the map.
-     * @returns {string[]} An array of validator names.
-     */
-    getValidatorNames() {
-        return Array.from(this.#validators.keys());
+        this.validators.clear();
+        this.documentation.clear();
     }
 
     /**
@@ -260,28 +245,30 @@ export class ExtAssert {
      * @returns {asserts schemaName} Asserts that `val` conforms to the schema.
      */
     assert(schemaName, val, msg) {
-        const validator = this.#validators.get(schemaName);
+        const validator = this.validators.get(schemaName);
         if (typeof validator === 'undefined') throw new Error(`Validator "${schemaName}" not found.`);
         if (!validator(val)) throw new TypeError(msg);
     }
 
-    /**
-     * Provides a list of enum values for slash commands based on the validator names.
-     * @param {SlashCommandExecutor} _ - Unused parameter.
-     * @param {SlashCommandScope} __ - Unused parameter.
-     * @returns {SlashCommandEnumValue[]} An array of `SlashCommandEnumValue` instances.
-     */
-    #slashEnumProvider(_, __) {
-        return [
-            ...this.getValidatorNames().map((name) => {
-                return new SlashCommandEnumValue(name);
-            }),
-        ].filter((item, idx, list) => idx == list.findIndex(it => it.value == item.value));
+    getValidatorNames() {
+        return Array.from(this.validators.keys());
     }
 
     /**
-     *
-     * @param {string} helpString
+     * Provides a list of enum values for slash commands based on the validator names.
+     * @returns {SlashCommandEnumValue[]} An array of `SlashCommandEnumValue` instances.
+     */
+    slashEnumProvider() {
+        const enum_arr = this.getValidatorNames().map((it) => {
+            return new SlashCommandEnumValue(it);
+        });
+        return enum_arr;
+    }
+
+    /**
+     * Initializes the assert slash command.
+     * @param {string} helpString - The help string for the command.
+     * @returns {Promise<void>}
      */
     async initAssertCommand(helpString) {
         const {
@@ -312,7 +299,7 @@ export class ExtAssert {
                     typeList: [
                         ARGUMENT_TYPE.STRING,
                     ],
-                    enumProvider: this.#slashEnumProvider,
+                    enumList: this.slashEnumProvider(),
                     forceEnum: true,
                     isRequired: true,
                 }),
@@ -352,14 +339,14 @@ export class ExtAssert {
 
         SlashCommandParser.addCommandObject(SlashCommand.fromProps({
             name: `${this.id}-schema-docs`,
-            callback: (_, __) => {
+            callback: async (_, __) => {
                 const ctx = SillyTavern.getContext();
-                const validators = this.#documentation.keys();
+                const validators = this.documentation.keys();
 
                 const docs = [];
                 for (const validator of validators) {
                     const section = [];
-                    const doc = this.#documentation.get(validator);
+                    const doc = this.documentation.get(validator);
                     if (doc === undefined) continue;
 
                     if (doc.name !== undefined)
@@ -376,7 +363,8 @@ export class ExtAssert {
 
                 const joined_docs = docs.join('\n\n---\n\n');
 
-                ctx.sendSystemMessage('help', joined_docs);
+
+                ctx.sendSystemMessage('generic', joined_docs);
 
                 // @ts-expect-error - SillyTavern typing issue.
                 return _._scope.pipe;
